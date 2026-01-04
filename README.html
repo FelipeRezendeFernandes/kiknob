@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido: Apoio de Celular</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bevan&family=Kaushan+Script&family=Playfair+Display:wght@900&family=UnifrakturMaguntia&family=Inconsolata&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        #areaTexto {
+            display: none;
+            padding: 15px;
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+
+        #previewBox {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px dashed #999;
+            text-align: center;
+            min-height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: #fff;
+            word-break: break-word;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 25px;
+            box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Configurar Pedido</h2>
+        <p class="subtitle">Item: Apoio de Celular</p>
+
+        <div class="form-group">
+            <label for="corSelect">Cor do Apoio:</label>
+            <select id="corSelect">
+                <option value="Preto">Preto</option>
+                <option value="Branco">Branco</option>
+                <option value="Vermelho">Vermelho</option>
+                <option value="Azul">Azul</option>
+                <option value="Verde">Verde</option>
+                <option value="Rosa">Rosa</option>
+                <option value="Amarelo">Amarelo</option>
+            </select>
+        </div>
+
+        <div class="form-group checkbox-wrapper" onclick="document.getElementById('checkTexto').click()">
+            <input type="checkbox" id="checkTexto" onclick="event.stopPropagation()">
+            <label for="checkTexto" style="margin:0; cursor:pointer">Personalizar com Texto?</label>
+        </div>
+
+        <div id="areaTexto">
+            <div class="form-group">
+                <label for="inputTexto">Texto a ser escrito:</label>
+                <input type="text" id="inputTexto" placeholder="Digite aqui..." maxlength="20">
+            </div>
+
+            <div class="form-group">
+                <label for="fonteSelect">Estilo da Fonte:</label>
+                <select id="fonteSelect">
+                    <option value="Calibri, sans-serif">Calibri</option>
+                    <option value="Forte, 'Kaushan Script', cursive">Forte</option>
+                    <option value="'Cooper Black', 'Bevan', serif">Cooper Black</option>
+                    <option value="'Courier New', monospace">Courier New</option>
+                    <option value="Consolas, 'Inconsolata', monospace">Consolas</option>
+                    <option value="Elephant, 'Playfair Display', serif">Elephant</option>
+                    <option value="Chomsky, 'UnifrakturMaguntia', serif">Chomsky</option>
+                </select>
+            </div>
+        </div>
+
+        <label>Como vai ficar (Simulação):</label>
+        <div id="previewBox">SEU TEXTO</div>
+
+        <button class="btn-whatsapp" onclick="enviarWhatsApp()">
+            Enviar Pedido via WhatsApp
+        </button>
+    </div>
+
+    <script>
+        const checkTexto = document.getElementById('checkTexto');
+        const areaTexto = document.getElementById('areaTexto');
+        const inputTexto = document.getElementById('inputTexto');
+        const fonteSelect = document.getElementById('fonteSelect');
+        const corSelect = document.getElementById('corSelect');
+        const previewBox = document.getElementById('previewBox');
+
+        // 1. Mostrar/Esconder campos
+        checkTexto.addEventListener('change', function() {
+            if (this.checked) {
+                areaTexto.style.display = 'block';
+                inputTexto.focus();
+            } else {
+                areaTexto.style.display = 'none';
+                inputTexto.value = ''; // Limpa o texto
+                atualizarPreview();
+            }
+        });
+
+        // 2. Atualizar Preview
+        function atualizarPreview() {
+            // Mapeamento simples de cores para o CSS
+            const corMap = {
+                'Preto': '#000000',
+                'Branco': '#FFFFFF', // Adiciona borda se for branco
+                'Vermelho': '#D32F2F',
+                'Azul': '#1976D2',
+                'Verde': '#388E3C',
+                'Rosa': '#E91E63',
+                'Amarelo': '#FBC02D'
+            };
+
+            const corEscolhida = corSelect.value;
+            previewBox.style.color = corMap[corEscolhida] || '#000';
+            
+            // Se for branco, muda o fundo do preview para cinza escuro para dar contraste
+            if (corEscolhida === 'Branco') {
+                previewBox.style.backgroundColor = '#999';
+            } else {
+                previewBox.style.backgroundColor = '#fff';
+            }
+
+            if (checkTexto.checked) {
+                const texto = inputTexto.value;
+                previewBox.textContent = texto || "Digite para ver...";
+                previewBox.style.fontFamily = fonteSelect.value;
+            } else {
+                previewBox.textContent = "Sem texto (Apenas o Apoio)";
+                previewBox.style.fontFamily = 'sans-serif';
+            }
+        }
+
+        // Event Listeners
+        corSelect.addEventListener('change', atualizarPreview);
+        inputTexto.addEventListener('input', atualizarPreview);
+        fonteSelect.addEventListener('change', atualizarPreview);
+
+        // Inicializar
+        atualizarPreview();
+
+        // 3. Enviar WhatsApp
+        function enviarWhatsApp() {
+            // ************************************************
+            // TROQUE PELO SEU NÚMERO AQUI
+            const numeroWhatsApp = "5511999999999"; 
+            // ************************************************
+
+            // Cabeçalho fixo do pedido
+            let mensagem = `*PEDIDO: Apoio de celular*\n\n`;
+            
+            mensagem += `*Cor:* ${corSelect.value}`;
+
+            if (checkTexto.checked) {
+                const texto = inputTexto.value.trim();
+                const nomeFonte = fonteSelect.options[fonteSelect.selectedIndex].text; // Pega o nome visível (ex: Chomsky)
+
+                if (!texto) {
+                    alert("Você marcou a opção de texto mas não escreveu nada.");
+                    inputTexto.focus();
+                    return;
+                }
+
+                mensagem += `\n*Personalização:* COM TEXTO`;
+                mensagem += `\n*Texto:* ${texto}`;
+                mensagem += `\n*Fonte:* ${nomeFonte}`;
+            } else {
+                mensagem += `\n*Personalização:* SEM TEXTO (Liso)`;
+            }
+
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
